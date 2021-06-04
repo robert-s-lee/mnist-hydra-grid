@@ -7,12 +7,10 @@ We will show simple steps to take ML code from laptop to scale out hyperparamete
   - [Environment setup](#environment-setup)
   - [Clone from GitHub](#clone-from-github)
   - [Run an experiment](#run-an-experiment)
-- [Test Grid.ai dedicated VM](#test-gridai-dedicated-vm)
+- [Test on Grid.ai](#test-on-gridai)
   - [Create MNIST Datastore](#create-mnist-datastore)
-- [Hyperparamter sweeps on Grid.ai sessions](#hyperparamter-sweeps-on-gridai-sessions)
-  - [Use Web Interface](#use-web-interface)
-  - [The following worked](#the-following-worked)
-  - [multi run does not work](#multi-run-does-not-work)
+  - [Run on Grid.ai](#run-on-gridai)
+  - [Inspect Artifacts and Outputs](#inspect-artifacts-and-outputs)
 
 # Develop Locally
 
@@ -45,38 +43,59 @@ pip freeze > requirements.txt
 git clone https://github.com/robert-s-lee/mnist-hydra-grid
 ```
 ## Run an experiment
-Run an experiments with `batch_size=32` 
+Run an experiments with `batch_size=32`.  The first run will download MNIST dataset to directory named `mnist`.  This downloaded dataset will be reused in subsequent runs. 
 ```
 python mnist-hydra-01.py data_dir=$(pwd)/mnist batch_size=32
 ```
 
-# Test Grid.ai dedicated VM
+# Test on Grid.ai
 
 ## Create MNIST Datastore
-There is no need to repeatedly download the MNIST dataset.
+Create [Grid.ai Datastore](https://docs.grid.ai/products/add-data-to-grid-datastores#datastores-scalable-datasets) from [downloaded MNIST dataset](#run-an-experiment).
 ```
-grid datastores create --name mnist --source mnist
-```
-
-# Hyperparamter sweeps on Grid.ai sessions
-
-## Use Web Interface 
-```
-grid datastores create --name mnist --source mnist
+grid datastore create --name mnist --source mnist
+grid datastore list
 ```
 
+## Run on Grid.ai
 
-## The following worked
+Couple of explanations on the parameters:
+- `--use_spot` use interruptible instance that is 60% to 90% more cost effective
+- `--instance_type=t2.medium` use 2 CPU which should cost $0.01 for this run
+- `--datastore_name=mnist` use the [Grid.ai Datastore created above](#create-mnist-datastore) 
+- `--datastore_mount_dir=/datastores/mnist` mount location for the script
+
+The output from the above will show below with the host name `khaki-seagull-591`
+```
+grid run --use_spot --instance_type=t2.medium --datastore_name=mnist --datastore_version=2 --datastore_mount_dir=/datastores/mnist mnist-hydra-01.py data_dir=/datastores/mnist batch_size=32
+```
+The output will show successful submission.
 
 ```
-data_dir=/datastores/mnist batch_size=128 epochs=2
-```
+WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a default. To use N GPUs pass in '--grid_gpus N' flag.
 
-## multi run does not work
-seem to not like unmatched "--"
+                Run submitted!
+                `grid status` to list all runs
+                `grid status khaki-seagull-591` to see all experiments for this run
+
+                ----------------------
+                Submission summary
+                ----------------------
+                script:                  mnist-hydra-01.py
+                instance_type:           t2.medium
+                use_spot:                True
+                cloud_provider:          aws
+                cloud_credentials:       xxxxxxxxxx
+                grid_name:               khaki-seagull-591
+                datastore_name:          mnist
+                datastore_version:       1
+                datastore_mount_dir:     /datastores/mnist
 ```
---multirun data_dir=/datastores/mnist batch_size=16,32,64,128 epochs=1,2
-python mnist-hydra-01.py \
---multirun data_dir=/datastores/mnist batch_size=32,64 hydra/launcher=joblib  \
+## Inspect Artifacts and Outputs
+
+Note addition of `exp0` to the name.  This shows the first experiment.
+
+```
+grid logs khaki-seagull-591-exp0
 ```
 
