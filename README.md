@@ -53,7 +53,7 @@ python mnist-hydra-01.py data_dir=$(pwd)/mnist batch_size=32
 ## Create MNIST Datastore
 Create [Grid.ai Datastore](https://docs.grid.ai/products/add-data-to-grid-datastores#datastores-scalable-datasets) from [downloaded MNIST dataset](#run-an-experiment).
 ```
-grid datastore create --name mnist --source mnist
+grid datastore create --name mnist-torchvision --source mnist
 grid datastore list
 ```
 
@@ -67,33 +67,33 @@ Couple of explanations on the parameters:
 
 The output from the above will show below with the host name `khaki-seagull-591`
 ```
-grid run --use_spot --instance_type=t2.medium --datastore_name=mnist --datastore_version=2 --datastore_mount_dir=/datastores/mnist mnist-hydra-01.py data_dir=/datastores/mnist batch_size=32
+grid run --use_spot --instance_type=t2.medium --datastore_name=mnist-torchvision --datastore_mount_dir=/datastores/mnist mnist-hydra-01.py data_dir=/datastores/mnist batch_size=32
 ```
-The output will show successful submission.
 
+The output will show successful submission.
 ```
 WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a default. To use N GPUs pass in '--grid_gpus N' flag.
 
-                Run submitted!
-                `grid status` to list all runs
-                `grid status khaki-seagull-591` to see all experiments for this run
+Run submitted!
+`grid status` to list all runs
+`grid status khaki-seagull-591` to see all experiments for this run
 
-                ----------------------
-                Submission summary
-                ----------------------
-                script:                  mnist-hydra-01.py
-                instance_type:           t2.medium
-                use_spot:                True
-                cloud_provider:          aws
-                cloud_credentials:       xxxxxxxxxx
-                grid_name:               khaki-seagull-591
-                datastore_name:          mnist
-                datastore_version:       1
-                datastore_mount_dir:     /datastores/mnist
+----------------------
+Submission summary
+----------------------
+script:                  mnist-hydra-01.py
+instance_type:           t2.medium
+use_spot:                True
+cloud_provider:          aws
+cloud_credentials:       xxxxxxxxxx
+grid_name:               rich-skink-314
+datastore_name:          mnist
+datastore_version:       1
+datastore_mount_dir:     /datastores/mnist
 ```
 ## Inspect Artifacts and Outputs
 
-Note addition of `exp0` to the name.  This shows the first experiment.
+Note addition of `exp0` to the name. When parallem VMs are allocated using hyperparamter sweep, each VM will have exp0 to expN.  the first experiment.
 
 ```
 grid logs khaki-seagull-591-exp0
