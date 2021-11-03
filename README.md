@@ -23,7 +23,7 @@ These steps follows documentation from
  
 ``` bash
 # from Grid.ai Virtual Environment
-conda create --name hydra python=3.7
+conda create --name hydra python=3.8
 conda activate hydra
 pip install lightning-grid --upgrade
 # from PyTorch Hydra
