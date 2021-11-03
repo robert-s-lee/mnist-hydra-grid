@@ -1,0 +1,6 @@
+torchvision
+hydra_core
+hydra_configs
+omegaconf
+torch
+dataclasses
