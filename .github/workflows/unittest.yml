@@ -1,0 +1,36 @@
+name: 'Grid Hydra'
+on:
+  push:
+    paths:
+      - mnist-hydra-01.py
+      - .github/workflows/unittest.yml
+jobs:
+  unittests:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8]       
+        python-venv: [""]       
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2     
+      - uses: gridai-actions/gridai-login@main
+        with:
+          python-version: ${{ matrix.python-version }}
+          python-venv: ${{ matrix.python-venv }}
+          gridai-username: ${{ secrets.GRIDAI_USERNAME }} 
+          gridai-key: ${{ secrets.GRIDAI_KEY }}
+      # just Hydra options. DO NOT MIX --param value with param=value style.       
+      - uses: gridai-actions/gridai-run@main
+        with:
+          script-dir: ${GITHUB_WORKSPACE}
+          script-name: mnist-hydra-01.py
+          script-args: save_model=True epochs=3
+      # no options    
+      - uses: gridai-actions/gridai-run@main
+        with:
+          script-dir: ${GITHUB_WORKSPACE}
+          script-name: mnist-hydra-01.py

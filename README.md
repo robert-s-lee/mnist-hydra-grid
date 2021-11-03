@@ -70,7 +70,12 @@ The output from the above will show below with the host name `khaki-seagull-591`
 ```
 grid run --use_spot --instance_type=t2.medium --datastore_name=mnist-torchvision --datastore_mount_dir=/datastores/mnist mnist-hydra-01.py data_dir=/datastores/mnist batch_size=32
 
+# run the model
 grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py
+# save the checkpoint file
+grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True                            
+# save the checkpoint file, override mnistconf.yaml epochs setting
+grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True epochs=3
 
 ```
 

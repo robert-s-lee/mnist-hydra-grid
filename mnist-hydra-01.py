@@ -28,6 +28,7 @@ from hydra_configs.torch.optim import AdadeltaConf
 from hydra_configs.torch.optim.lr_scheduler import StepLRConf
 
 from omegaconf import OmegaConf
+from torch.utils.tensorboard import SummaryWriter
 
 @dataclass
 class MNISTConf:
@@ -42,6 +43,7 @@ class MNISTConf:
     save_model: bool = False
     checkpoint_name: str = "unnamed.pt"
     adadelta: AdadeltaConf = AdadeltaConf()
+    log_dir: str = "lightning_logs/pytorch_mnist_hyrda"
     steplr: StepLRConf = StepLRConf(
         step_size=1
     )  # we pass a default for step_size since it is required, but missing a default in PyTorch (and consequently in hydra-torch)
@@ -79,7 +81,7 @@ class Net(nn.Module):
         return output
 
 
-def train(args, model, device, train_loader, optimizer, epoch):
+def train(args, model, device, train_loader, optimizer, epoch, writer):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -88,6 +90,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
+        writer.add_scalar("Loss/train", loss.detach(), batch_idx)
         if batch_idx % args.log_interval == 0:
             print(
                 "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
@@ -169,8 +172,10 @@ def main(cfg):  # DIFF
         optimizer=optimizer,
     )  # DIFF
 
+    writer = SummaryWriter(log_dir=cfg.log_dir)
+
     for epoch in range(1, cfg.epochs + 1):  # DIFF
-        train(cfg, model, device, train_loader, optimizer, epoch)  # DIFF
+        train(cfg, model, device, train_loader, optimizer, epoch, writer)  # DIFF
         test(model, device, test_loader)
         scheduler.step()
 
@@ -179,5 +184,5 @@ def main(cfg):  # DIFF
 
 
 if __name__ == "__main__":
-    main()
+  main()
 # %%

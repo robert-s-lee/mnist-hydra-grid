@@ -1,5 +1,6 @@
 defaults:
   - base_mnistconf
+  - _self_       # recommendation from https://hydra.cc/docs/upgrades/1.0_to_1.1/default_composition_order/
   - override hydra/launcher: joblib  
 batch_size: 32
 epochs: 2

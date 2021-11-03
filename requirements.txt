@@ -3,3 +3,8 @@ torch
 torchvision
 git+https://github.com/pytorch/hydra-torch
 hydra-joblib-launcher
+omegaconf
+tensorboard
+# not required as these are added from previous but make grid requirements checker happy
+dataclasses
+hydra_configs
