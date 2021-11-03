@@ -48,7 +48,7 @@ class MNISTConf:
 
 
 cs = ConfigStore.instance()
-cs.store(name="mnistconf", node=MNISTConf)
+cs.store(name="base_mnistconf", node=MNISTConf)
 
 ###### / HYDRA BLOCK ######
 

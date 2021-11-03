@@ -69,6 +69,9 @@ Couple of explanations on the parameters:
 The output from the above will show below with the host name `khaki-seagull-591`
 ```
 grid run --use_spot --instance_type=t2.medium --datastore_name=mnist-torchvision --datastore_mount_dir=/datastores/mnist mnist-hydra-01.py data_dir=/datastores/mnist batch_size=32
+
+grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py
+
 ```
 
 The output will show successful submission.

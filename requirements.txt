@@ -1,6 +1,5 @@
-torchvision
-hydra_core
-hydra_configs
-omegaconf
+hydra-core
 torch
-dataclasses
+torchvision
+git+https://github.com/pytorch/hydra-torch
+hydra-joblib-launcher
