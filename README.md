@@ -1,4 +1,6 @@
-[MNIST](http://yann.lecun.com/exdb/mnist/) running on [Grid.ai](https://www.grid.ai/) using      [Hydra](https://hydra.cc) and 
+[![Grid Hydra](https://github.com/robert-s-lee/mnist-hydra-grid/actions/workflows/unittest.yml/badge.svg)](https://github.com/robert-s-lee/mnist-hydra-grid/actions/workflows/unittest.yml)
+
+[MNIST](http://yann.lecun.com/exdb/mnist/) running on [Grid.ai](https://www.grid.ai/) using [Hydra](https://hydra.cc) and 
 [PyTorch Vision](https://pytorch.org/vision/stable/index.html) 
 
 We will show simple steps to take ML code from laptop to scale out hyperparameter sweep on public cloud.  Grid.ai allows this without any change to the ML code.  
@@ -76,7 +78,8 @@ grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py
 grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True                            
 # save the checkpoint file, override mnistconf.yaml epochs setting
 grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True epochs=3
-
+# alternate config file
+grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True epochs=3 --config-name mnistconf.yaml 
 ```
 
 The output will show successful submission.

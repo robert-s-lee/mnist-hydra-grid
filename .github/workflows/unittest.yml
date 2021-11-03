@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - mnist-hydra-01.py
+      - requirements.txt
       - .github/workflows/unittest.yml
 jobs:
   unittests:
