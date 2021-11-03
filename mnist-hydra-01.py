@@ -6,6 +6,11 @@
 # pip install hydra-core
 # pip install hydra
 # pip install git+https://github.com/pytorch/hydra-torch
+#
+# The were modified:
+#  add data_dir option to place MNIST datastore
+#  add tensorboard output for loss
+#  change to hyrda 1.1 config 
 # ````
 
 # %%
