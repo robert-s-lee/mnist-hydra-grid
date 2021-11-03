@@ -23,12 +23,13 @@ These steps follows documentation from
  
 ``` bash
 # from Grid.ai Virtual Environment
-conda create --name hydra python=3.8
+conda create --yes --name hydra python=3.8
 conda activate hydra
 pip install lightning-grid --upgrade
 # from PyTorch Hydra
 pip install hydra-core
-pip install hydra
+pip install torch
+pip install torchvision
 pip install git+https://github.com/pytorch/hydra-torch
 pip install hydra-joblib-launcher --upgrade
 # from Grid.ai as Hydra requires this for now
