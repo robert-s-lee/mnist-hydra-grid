@@ -6,7 +6,7 @@
 We will show simple steps to take ML code from laptop to scale out hyperparameter sweep on public cloud.  Grid.ai allows this without any change to the ML code.  
 
 - [Develop Locally](#develop-locally)
-- [Testng on Grid.ai](#testng-on-gridai)
+- [Testing on Grid.ai](#testing-on-gridai)
 - [Automate using GitHub Actions](#automate-using-github-actions)
 
 # Develop Locally
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 python mnist-hydra-01.py 
 ```
 
-# Testng on Grid.ai
+# Testing on Grid.ai
 
 Simply change `python` to `grid run`.  Couple of variations below.  
 
@@ -55,6 +55,9 @@ grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_mo
 
 # Automate using GitHub Actions
 
-[unittest.yml](.github/workflows/unittest.yml) runs equivalent of `grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py` and `grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True epochs=3`.  
+[unittest.yml](.github/workflows/unittest.yml) runs equivalent of the following commands:
 
-Remember to add `GRIDAI_USERNAME` and `GRIDAI_KEY` repo secrets if forking this repo.
+- `grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py`  
+- `grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True epochs=3`.  
+
+NOTE: Remember to add `GRIDAI_USERNAME` and `GRIDAI_KEY` repo secrets if forking this repo.
