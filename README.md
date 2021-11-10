@@ -53,6 +53,20 @@ grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_mo
 grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py save_model=True epochs=3 --config-name mnistconf.yaml 
 ```
 
+- Parallel run on a single server
+```
+grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py epochs=3,10,15 --multirun
+
+grid run --localdir --dependency_file requirements.txt mnist-hydra-01.py epochs=3,10,15 batch_size=32,64 --multirun
+
+[experiment] [2021-11-05T01:21:12.092751+00:00] [2021-11-05 01:21:12,092][HYDRA] Joblib.Parallel(n_jobs=-1,backend=loky,prefer=processes,require=None,verbose=0,timeout=None,pre_dispatch=2*n_jobs,batch_size=auto,temp_folder=None,max_nbytes=None,mmap_mode=r) is launching 3 jobs
+[experiment] [2021-11-05T01:21:12.092792+00:00] [2021-11-05 01:21:12,092][HYDRA] Launching jobs, sweep output dir : multirun/2021-11-05/01-21-11
+[experiment] [2021-11-05T01:21:12.092799+00:00] [2021-11-05 01:21:12,092][HYDRA]        #0 : epochs=3
+[experiment] [2021-11-05T01:21:12.092804+00:00] [2021-11-05 01:21:12,092][HYDRA]        #1 : epochs=10
+[experiment] [2021-11-05T01:21:12.092808+00:00] [2021-11-05 01:21:12,092][HYDRA]        #2 : epochs=15
+
+```
+
 # Automate using GitHub Actions
 
 [unittest.yml](.github/workflows/unittest.yml) runs equivalent of the following commands:
